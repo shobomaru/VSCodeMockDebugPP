@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8">
+		<title>Client</title>
+	</head>
+	<body>
+		<p>Socket Client</p>
+		<form action="#" onSubmit="socketSend(); return false;">
+			<input type="text" id="msg">
+			<input type="button" value="Send" onClick="socketSend();">
+		</form>
+		<p id="sock_state">Not connected</p>
+		<p id="sock_msg"></p>
+		<script type="text/javascript" src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+		<script type="text/javascript">
+		//<!--
+var sock = io.connect("http://localhost:8080");
+sock.on("connect", function(msg) {
+	document.getElementById("sock_state").innerHTML = "Connected";
+});
+sock.on("message", function(msg) {
+	document.getElementById("sock_msg").innerHTML = msg;
+});
+function socketSend() {
+	sock.emit("message", { value: document.getElementById("msg").value });
+}
+		//--></script>
+	</body>
+</html>
