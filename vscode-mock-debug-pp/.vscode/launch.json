@@ -18,7 +18,7 @@
 			"request": "launch",
 			"name": "Run Server",
 			"cwd": "${workspaceRoot}",
-			"program": "${workspaceRoot}/src/mockDebug.ts",
+			"program": "${workspaceRoot}/src/mockppDebug.ts",
 			"args": [ "--server=4711" ],
 			"sourceMaps": true,
 			"outFiles": [ "${workspaceRoot}/out/*.js" ]
