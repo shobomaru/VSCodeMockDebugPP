@@ -50,6 +50,8 @@ class MockDebugSession extends DebugSession {
 
 	private _variableHandles = new Handles<string>();
 
+	private _userValiables = new Map<string, any>();
+
 	/**
 	 * Creates a new debug adapter that is used for one debug session.
 	 * We configure the default implementation of a debug adapter here.
@@ -85,6 +87,7 @@ class MockDebugSession extends DebugSession {
 		this.sendResponse(response);
 
 		this.connectClient();
+		this._userValiables.set("Foo", "Bar");
 	}
 
 	protected launchRequest(response: DebugProtocol.LaunchResponse, args: LaunchRequestArguments): void {
@@ -122,6 +125,9 @@ class MockDebugSession extends DebugSession {
 			}
 			else if (cmd == "quit") {
 				this.sendEvent(new TerminatedEvent());
+			}
+			else if (cmd == "local_add") {
+				this._userValiables.set(cmds[1], cmds[2]);
 			}
 		};
 		this.protocol.connect(8080, proc);
@@ -212,8 +218,8 @@ class MockDebugSession extends DebugSession {
 		const frameReference = args.frameId;
 		const scopes = new Array<Scope>();
 		scopes.push(new Scope("Local", this._variableHandles.create("local_" + frameReference), false));
-		scopes.push(new Scope("Closure", this._variableHandles.create("closure_" + frameReference), false));
-		scopes.push(new Scope("Global", this._variableHandles.create("global_" + frameReference), true));
+		//scopes.push(new Scope("Closure", this._variableHandles.create("closure_" + frameReference), false));
+		//scopes.push(new Scope("Global", this._variableHandles.create("global_" + frameReference), true));
 
 		response.body = {
 			scopes: scopes
@@ -222,34 +228,23 @@ class MockDebugSession extends DebugSession {
 	}
 
 	protected variablesRequest(response: DebugProtocol.VariablesResponse, args: DebugProtocol.VariablesArguments): void {
-
 		const variables = [];
 		const id = this._variableHandles.get(args.variablesReference);
 		if (id != null) {
-			variables.push({
-				name: id + "_i",
-				type: "integer",
-				value: "123",
-				variablesReference: 0
+			this._userValiables.forEach((val, key) => {
+				variables.push({
+					name: key,
+					type: "string",
+					value: val,
+					variablesReference: 0
+				});
 			});
-			variables.push({
-				name: id + "_f",
-				type: "float",
-				value: "3.14",
-				variablesReference: 0
-			});
-			variables.push({
-				name: id + "_s",
-				type: "string",
-				value: "hello world",
-				variablesReference: 0
-			});
-			variables.push({
+			/*variables.push({
 				name: id + "_o",
 				type: "object",
-				value: "Object",
+				value: "This is a default value.",
 				variablesReference: this._variableHandles.create("object_")
-			});
+			});*/
 		}
 
 		response.body = {
