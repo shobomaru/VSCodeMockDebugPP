@@ -7,6 +7,7 @@
             "type": "mockpp",
             "request": "launch",
             "name": "Mock++Debug",
+            "debugServer": 4711,
             "program": "${workspaceRoot}/${command.AskForProgramName}",
             "stopOnEntry": true
         }
