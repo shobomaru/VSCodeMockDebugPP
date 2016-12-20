@@ -84,6 +84,8 @@ class MockDebugSession extends DebugSession {
 		// make VS Code to show a 'step back' button
 		response.body.supportsStepBack = true;
 
+		response.body.supportsSetVariable = true;
+
 		this.sendResponse(response);
 
 		this.connectClient();
@@ -250,6 +252,17 @@ class MockDebugSession extends DebugSession {
 		response.body = {
 			variables: variables
 		};
+		this.sendResponse(response);
+	}
+
+	protected setVariableRequest(response: DebugProtocol.SetVariableResponse, args: DebugProtocol.SetVariableArguments): void {
+
+		if (this._userValiables.has(args.name)) {
+			this._userValiables[args.name] = args.value;
+			response.body = {
+				value: args.value
+			};
+		}
 		this.sendResponse(response);
 	}
 
