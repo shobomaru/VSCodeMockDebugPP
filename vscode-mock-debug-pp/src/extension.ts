@@ -8,9 +8,14 @@ const initialConfigurations = {
 	{
 		type: 'mockpp',
 		request: 'launch',
-		name: 'Mock++Debug',
+		name: 'Mock++Debug Launch',
 		program: '${workspaceRoot}/${command.AskForProgramName}',
 		stopOnEntry: true
+	},
+	{
+		type: 'mockpp',
+		request: 'attach',
+		name: 'Mock++Debug Attach'
 	}
 ]}
 

@@ -76,6 +76,14 @@
 							"name": "{{2:Launch Program}}",
 							"program": "${workspaceRoot}/{{1:Program}}"
 						}
+					},
+					{
+						"label": "Mock++ Debug: Attach",
+						"description": "A new configuration for attaching a mock++ debug program",
+						"body": {
+							"type": "mockpp",
+							"request": "attach"
+						}
 					}
 				],
 

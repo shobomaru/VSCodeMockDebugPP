@@ -109,6 +109,11 @@ class MockDebugSession extends DebugSession {
 		}
 	}
 
+	protected attachRequest(response: DebugProtocol.AttachResponse, args: DebugProtocol.AttachRequestArguments): void {
+
+		this.sendResponse(response);
+	}
+
 	private protocol = new protocol.Protocol;
 	private connectClient() {
 		let proc = (data: string) => {
