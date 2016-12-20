@@ -136,6 +136,11 @@ class MockDebugSession extends DebugSession {
 			else if (cmd == "local_add") {
 				this._userValiables.set(cmds[1], cmds[2]);
 			}
+			else if (cmd == "break") {
+				//this._sourceFile = cmds[1];
+				this._currentLine = parseInt(cmds[2], 10);
+				this.sendEvent(new StoppedEvent("breakpoint", MockDebugSession.THREAD_ID));
+			}
 		};
 		this.protocol.connect(8080, proc);
 	}
